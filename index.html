@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>金梦 - 个人作品集</title>
+    <style>
+        /* CSS 变量与暗黑/浅色模式设定 */
+        :root {
+            --bg-color: #ffffff;
+            --text-main: #1a1a1a;
+            --text-muted: #666666;
+            --border-color: #eeeeee;
+            --nav-bg: rgba(255, 255, 255, 0.95);
+            --card-bg: #f9f9f9;
+            --shadow-hover: 0 10px 30px rgba(0,0,0,0.08);
+            --transition: all 0.3s ease;
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #121212;
+            --text-main: #f5f5f5;
+            --text-muted: #aaaaaa;
+            --border-color: #333333;
+            --nav-bg: rgba(18, 18, 18, 0.95);
+            --card-bg: #1e1e1e;
+            --shadow-hover: 0 10px 30px rgba(255,255,255,0.05);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; background-color: var(--bg-color); color: var(--text-main); line-height: 1.6; transition: var(--transition); scroll-behavior: smooth; }
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+
+        /* 顶部导航栏 */
+        .navbar { position: fixed; top: 0; width: 100%; height: 70px; background: var(--nav-bg); border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; padding: 0 5%; z-index: 1000; backdrop-filter: blur(10px); }
+        .nav-logo { font-size: 20px; font-weight: bold; letter-spacing: 2px; }
+        .nav-links { display: flex; gap: 30px; }
+        .nav-links li a { font-size: 14px; color: var(--text-muted); transition: var(--transition); padding: 5px 0; }
+        .nav-links li a:hover, .nav-links li a.active { color: var(--text-main); font-weight: 600; }
+        .nav-controls { display: flex; gap: 15px; font-size: 13px; cursor: pointer; color: var(--text-muted); }
+        .nav-controls span:hover { color: var(--text-main); }
+
+        /* 页面区块通用设置 */
+        section { padding: 100px 5%; min-height: 100vh; display: flex; flex-direction: column; justify-content: center; border-bottom: 1px solid var(--border-color); }
+        .section-title { font-size: 28px; font-weight: bold; margin-bottom: 50px; text-align: center; letter-spacing: 2px; }
+
+        /* 首屏 Hero (全屏横幅轮播) */
+        #home { 
+            padding: 0; 
+            height: 100vh; 
+            width: 100%; 
+            display: block; 
+            position: relative; 
+            background-color: var(--bg-color); 
+            border-bottom: none;
+        }
+        .hero-slider-container {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+            background-color: var(--bg-color);
+        }
+        .hero-slide {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            transition: opacity 1.2s ease-in-out;
+            z-index: 1;
+        }
+        .hero-slide.active {
+            opacity: 1;
+            z-index: 2;
+        }
+        /* 底部居中小字引导箭头 */
+        .scroll-down { 
+            position: absolute; 
+            bottom: 40px; 
+            left: 50%; 
+            transform: translateX(-50%); 
+            font-size: 12px; 
+            color: #ffffff; 
+            text-shadow: 0 2px 4px rgba(0,0,0,0.4);
+            text-align: center; 
+            animation: bounce 2s infinite; 
+            z-index: 10;
+            letter-spacing: 1px;
+        }
+        @keyframes bounce { 
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0) translateX(-50%); } 
+            40% { transform: translateY(-10px) translateX(-50%); } 
+            60% { transform: translateY(-5px) translateX(-50%); } 
+        }
+
+        /* 个人简介 */
+        #about .about-container { display: flex; gap: 50px; max-width: 1200px; margin: 0 auto; align-items: center; }
+        .about-photo { flex: 1; aspect-ratio: 1; background-color: var(--card-bg); border-radius: 8px; overflow: hidden; }
+        .about-photo img { width: 100%; height: 100%; object-fit: cover; }
+        .about-content { flex: 2; }
+        .about-content h2 { font-size: 24px; margin-bottom: 20px; }
+        .about-content p { color: var(--text-muted); margin-bottom: 20px; text-align: justify; }
+        .about-skills { margin-top: 30px; display: flex; gap: 15px; }
+        .skill-tag { padding: 5px 15px; border: 1px solid var(--border-color); border-radius: 20px; font-size: 12px; }
+
+        /* 网格列表 (品牌、包装、IP、标志) */
+        .grid-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; max-width: 1400px; margin: 0 auto; width: 100%; }
+        
+        /* 修改 a 标签作为网格项时的样式，防止下划线和颜色变异 */
+        .grid-container > a { display: block; text-decoration: none; color: inherit; }
+        
+        .card { background: var(--card-bg); border-radius: 8px; overflow: hidden; cursor: pointer; transition: var(--transition); border: 1px solid var(--border-color); height: 100%; }
+        .card:hover { transform: translateY(-5px); box-shadow: var(--shadow-hover); }
+        .card-img-wrap { width: 100%; aspect-ratio: 4/3; overflow: hidden; }
+        .card-img-wrap img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+        .card:hover .card-img-wrap img { transform: scale(1.05); }
+        .card-info { padding: 20px; }
+        .card-title { font-size: 16px; font-weight: bold; margin-bottom: 8px; }
+        .card-desc { font-size: 13px; color: var(--text-muted); }
+
+        /* 联系方式 */
+        #contact { text-align: center; min-height: 60vh; }
+        .contact-info { margin: 40px 0; font-size: 18px; line-height: 2.5; color: var(--text-muted); }
+        .btn-download { display: inline-block; padding: 12px 30px; background: var(--text-main); color: var(--bg-color); border-radius: 30px; font-size: 14px; margin-top: 20px; transition: var(--transition); }
+        .btn-download:hover { opacity: 0.8; }
+        .footer-text { margin-top: 80px; font-size: 12px; color: var(--text-muted); }
+
+        /* 响应式适配 */
+        @media (max-width: 1024px) {
+            .grid-container { grid-template-columns: repeat(2, 1fr); }
+            #about .about-container { flex-direction: column; }
+        }
+        @media (max-width: 768px) {
+            .grid-container { grid-template-columns: 1fr; }
+            .nav-links { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 顶部导航栏 -->
+    <nav class="navbar">
+        <div class="nav-logo">Bess PORTFOLIO</div>
+        <ul class="nav-links">
+            <li><a href="#home" class="active">首页</a></li>
+            <li><a href="#about">个人简介</a></li>
+            <li><a href="#brand">品牌</a></li>
+            <li><a href="#packaging">包装</a></li>
+            <li><a href="#ip">IP</a></li>
+            <li><a href="#logo">标志与字体</a></li>
+            <li><a href="#others">其他</a></li>
+            <li><a href="#contact">联系方式</a></li>
+        </ul>
+        <div class="nav-controls">
+            <span id="lang-toggle">简 / 繁</span>
+            <span id="theme-toggle">暗黑 / 浅色</span>
+        </div>
+    </nav>
+
+    <!-- 首屏 Hero (五张全屏横幅轮播) -->
+    <section id="home">
+        <div class="hero-slider-container">
+            <img src="images/brand02.jpg" class="hero-slide active" alt="横幅作品1">
+            <img src="images/brand03.jpg" class="hero-slide" alt="横幅作品2">
+            <img src="images/brand04.jpg" class="hero-slide" alt="横幅作品3">
+            <img src="images/brand05.jpg" class="hero-slide" alt="横幅作品4">
+            <img src="images/Package01.jpg" class="hero-slide" alt="横幅作品5">
+        </div>
+        <div class="scroll-down">
+            向下浏览作品<br>↓
+        </div>
+    </section>
+
+    <!-- 个人简介 -->
+    <section id="about">
+        <h2 class="section-title">个人简介</h2>
+        <div class="about-container">
+            <div class="about-photo">
+                <img src="images/Portrait01.jpg" alt="个人照片">
+            </div>
+            <div class="about-content">
+                <h2>关于我</h2>
+                <p>95后设计师，多年品牌全案设计经验，有一定的策划思维能力，致力于艺术与商业设计完美结合。工作积极认真，能够熟练运用设计软件；有较强的求知欲和责任感，敢于挑战自我。</p>
+                <p><strong>擅长方向：</strong>品牌 VI、礼盒包装、IP 形象、LOGO 字体、文创周边</p>
+                <p><strong>工作经历：</strong><br>
+                   2021.5-2025.2 上海弋品品牌策划有限公司 - 主创设计师<br>
+                   2018.6-2021.5 欧赛斯创意文化有限公司 - 资深设计师<br>
+                   2017.7-2018.6 亲亲水务有限公司 - 设计师 (实习)
+                </p>
+                <div class="about-skills">
+                    <span class="skill-tag">PS</span>
+                    <span class="skill-tag">AI</span>
+                    <span class="skill-tag">C4D</span>
+                    <span class="skill-tag">Blender</span>
+                    <span class="skill-tag">Figma</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 品牌 -->
+    <section id="brand">
+        <h2 class="section-title">品牌设计</h2>
+        <div class="grid-container">
+            
+            <!-- 甜啦啦项目卡片：这里已经添加了 <a> 标签包裹，实现了真正的页面跳转 -->
+            <a href="project-tianlala.html" target="_blank">
+                <div class="card">
+                    <div class="card-img-wrap"><img src="images/Tianlala.jpg" alt="甜啦啦"></div>
+                    <div class="card-info">
+                        <div class="card-title">甜啦啦 TIAN LALA</div>
+                        <div class="card-desc">鲜果茶&冰激凌 - 品牌视觉全案</div>
+                    </div>
+                </div>
+            </a>
+             <a href="project-Flipped coffee.html" target="_blank"> <div class="card">
+                <div class="card-img-wrap"><img src="images/Flipped_coffee.jpg" alt="小鹿乱撞"></div>
+                <div class="card-info">
+                    <div class="card-title">小鹿乱撞 FLIPPED COFFEE</div>
+                    <div class="card-desc">咖啡品牌 - 年轻化品牌视觉</div>
+                </div>
+            </div>
+        </a>
+        <a href="project-bbq.html" target="_blank"> 
+            <div class="card">
+                <div class="card-img-wrap"><img src="images/Yunnanbbq_27.jpg" alt="敢烧敢烤"></div>
+                <div class="card-info">
+                    <div class="card-title">敢烧敢烤</div>
+                    <div class="card-desc">云南小黄牛肉烧烤品牌视觉</div>
+                </div>
+            </div>
+        </a>   
+       
+        <a href="project-dreamtime.html" target="_blank"> 
+             <div class="card">
+                <div class="card-img-wrap"><img src="images/Dreamtime.jpg" alt="怀梦时光"></div>
+                <div class="card-info">
+                    <div class="card-title">怀梦时光</div>
+                    <div class="card-desc">0感内衣品牌视觉设计</div>
+                </div>
+            </div>
+        </a>
+
+
+       <a href="project-swallows.html" target="_blank"> 
+            <div class="card">
+                <div class="card-img-wrap"><img src="images/swallows.jpg" alt="三喜燕咖啡"></div>
+                <div class="card-info">
+                    <div class="card-title">三喜燕咖啡</div>
+                    <div class="card-desc">精品咖啡供应链一站式服务商</div>
+                </div>
+            </div>
+        </div>
+     </a>
+
+    </section>
+
+    <!-- 包装 -->
+    <section id="packaging">
+        <h2 class="section-title">包装设计</h2>
+        <div class="grid-container">
+             <a href="project-Daiyuemao.html" target="_blank"> 
+                <div class="card">
+                <div class="card-img-wrap"><img src="images/brand_Daiyuemao_53.jpg" alt="戴月猫"></div>
+                <div class="card-info">
+                    <div class="card-title">戴月猫包装</div>
+                    <div class="card-desc">冷泉珍香米/野山珍香米系列结构包装</div>
+                </div>
+            </div>
+            </a>
+
+             <a href="project-yaozhen.html" target="_blank"> 
+                <div class="card">
+                <div class="card-img-wrap"><img src="images/brand_yaozhen_53.jpg" alt="戴月猫"></div>
+                <div class="card-info">
+                    <div class="card-title">瑶珍大米</div>
+                    <div class="card-desc">冷泉珍香米/野山珍香米系列结构包装</div>
+                </div>
+            </div>
+            </a>
+             <a href="project-Jinyan.html" target="_blank"> 
+                <div class="card">
+                <div class="card-img-wrap"><img src="images/brand_Jinyan_59.jpg" alt="金雁大米"></div>
+                <div class="card-info">
+                    <div class="card-title">金雁大米高端线包装</div>
+                    <div class="card-desc">60年米匠传承礼盒与工艺应用</div>
+                </div>
+            </div>
+            </a>
+             <a href="project-luweishi.html" target="_blank"> 
+            <div class="card">
+                <div class="card-img-wrap"><img src="images/chuanzhen.jpg" alt="鹿卫士"></div>
+                <div class="card-info">
+                    <div class="card-title">鹿卫士药品包装</div>
+                    <div class="card-desc">医药类严谨视觉与材质排版</div>
+                </div>
+            </div>
+            </a>
+             <a href="project-bakery.html" target="_blank">  
+               <div class="card">
+                <div class="card-img-wrap"><img src="images/quanjia.jpg" alt="烤致工房"></div>
+                <div class="card-info">
+                    <div class="card-title">烤致工房面包包装</div>
+                    <div class="card-desc">快消食品包装与版式设计</div>
+                </div>
+            </div>
+            </a>
+        </div>
+    </section>
+
+    <!-- IP -->
+    <section id="ip">
+        <h2 class="section-title">IP 设计</h2>
+        <div class="grid-container">
+            <a href="project-laoniuwan.html" target="_blank"> 
+                <div class="card">
+                <div class="card-img-wrap"><img src="images/brand_Laoniuwan_65.jpg" alt="老牛湾IP"></div>
+                <div class="card-info">
+                    <div class="card-title">老牛湾 IP 形象</div>
+                    <div class="card-desc">3D建模、表情包与衍生周边徽章</div>
+                </div>
+            </div>
+            </a>
+             <a href="project-taizhou.html" target="_blank">
+            <div class="card">
+                <div class="card-img-wrap"><img src="images/brand_chengtou_77.jpg" alt="台州城投"></div>
+                <div class="card-info">
+                    <div class="card-title">台州城投 IP</div>
+                    <div class="card-desc">平面稿与3D渲染对照</div>
+                </div>
+            </div>
+            </a>
+        </div>
+    </section>
+
+    <!-- 标志与字体 -->
+    <section id="logo">
+        <h2 class="section-title">标志与字体</h2>
+        <div class="grid-container">
+             <a href="project-logos.html" target="_blank">
+                <div class="card">
+                <div class="card-img-wrap"><img src="images/brand_logo_88.jpg" alt="Logos"></div>
+                <div class="card-info">
+                    <div class="card-title">LOGO 标志合集</div>
+                    <div class="card-desc">三九传正、泰椰荟、善品家等项目展示</div>
+                </div>
+            </div>
+        </a>
+            
+            <a href="project-fonts.html" target="_blank">
+                <div class="card">
+                <div class="card-img-wrap"><img src="images/brand_fonts_89.jpg" alt="Fonts"></div>
+                <div class="card-info">
+                    <div class="card-title">字体设计</div>
+                    <div class="card-desc">标准字、制图规范与反色应用</div>
+                </div>
+            </div>
+            </a>
+        </div>
+    </section>
+
+    <!-- 其他 -->
+    <section id="others">
+        <h2 class="section-title">其他设计</h2>
+        <div class="grid-container">
+            
+             <a href="project-posters.html" target="_blank">
+                <div class="card">
+                <div class="card-img-wrap"><img src="images/brand_zhanlan_91.jpg" alt="海报设计"></div>
+                <div class="card-info">
+                    <div class="card-title">展览海报设计</div>
+                    <div class="card-desc">疯狂兔子宇宙博物馆、幸会莫奈主视觉排版</div>
+                </div>
+            </div>
+            </a>
+        </div>
+    </section>
+
+    <!-- 联系方式 -->
+    <section id="contact">
+        <h2 class="section-title">联系方式</h2>
+        <div class="contact-info">
+            <p><strong>微信 (WeChat)：</strong>1185442002</p>
+            <p><strong>电话 (Tel)：</strong>151-0214-8061</p>
+            <p><strong>邮箱 (Email)：</strong>1185442002@qq.com</p>
+            <p><strong>所在地 (Location)：</strong>中国</p>
+        </div>
+        <a href="#" class="btn-download">获取完整简历 (PDF)</a>
+        
+        <p class="footer-text">Very looking forward to contacting you. 感谢观看 <br>© 2026 金梦. 设计如影随形.</p>
+    </section>
+
+    <script>
+        // 暗黑/浅色模式切换
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        themeToggleBtn.addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            if(currentTheme === 'dark') {
+                document.documentElement.removeAttribute('data-theme');
+            } else {
+                document.documentElement.setAttribute('data-theme', 'dark');
+            }
+        });
+
+        // 简繁切换 (纯交互演示)
+        const langToggleBtn = document.getElementById('lang-toggle');
+        let isTraditional = false;
+        langToggleBtn.addEventListener('click', () => {
+            isTraditional = !isTraditional;
+            alert(isTraditional ? "已切换至繁体模式（效果演示）" : "已切换至简体模式（效果演示）");
+        });
+
+        // 滚动时导航栏文字加粗逻辑
+        const sections = document.querySelectorAll('section');
+        const navLinks = document.querySelectorAll('.nav-links li a');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (scrollY >= sectionTop - 100) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href').includes(current)) {
+                    link.classList.add('active');
+                }
+            });
+        });
+
+        // 全屏横幅 5张图 自动轮播逻辑
+        const slides = document.querySelectorAll('.hero-slide');
+        let currentSlide = 0;
+        
+        setInterval(() => {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (currentSlide + 1) % slides.length;
+            slides[currentSlide].classList.add('active');
+        }, 4000); // 4秒切换一次
+    </script>
+</body>
+</html>

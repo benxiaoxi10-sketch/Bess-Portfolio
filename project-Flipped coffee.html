@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>小鹿乱撞 FLIPPED COFFEE - 品牌视觉 | 金梦作品集</title>
+    <style>
+        /* 核心 CSS 变量（与首页保持一致） */
+        :root {
+            --bg-color: #ffffff;
+            --text-main: #1a1a1a;
+            --text-muted: #666666;
+            --border-color: #eeeeee;
+            --nav-bg: rgba(255, 255, 255, 0.95);
+            --transition: all 0.3s ease;
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #121212;
+            --text-main: #f5f5f5;
+            --text-muted: #aaaaaa;
+            --border-color: #333333;
+            --nav-bg: rgba(18, 18, 18, 0.95);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; background-color: var(--bg-color); color: var(--text-main); line-height: 1.8; transition: var(--transition); }
+        a { text-decoration: none; color: inherit; transition: var(--transition); }
+        ul { list-style: none; }
+
+        /* 顶部导航栏 */
+        .navbar { position: fixed; top: 0; width: 100%; height: 70px; background: var(--nav-bg); border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; padding: 0 5%; z-index: 1000; backdrop-filter: blur(10px); }
+        .nav-logo { font-size: 20px; font-weight: bold; letter-spacing: 2px; }
+        .nav-logo a:hover { opacity: 0.7; }
+        .nav-controls { display: flex; gap: 20px; font-size: 14px; cursor: pointer; color: var(--text-muted); align-items: center; }
+        .nav-controls span:hover, .nav-controls a:hover { color: var(--text-main); font-weight: 600; }
+
+        /* 项目详情容器 */
+        .project-wrapper { max-width: 1000px; margin: 120px auto 100px; padding: 0 5%; }
+        
+        /* 项目头部信息 */
+        .project-header { margin-bottom: 60px; text-align: center; }
+        .project-title { font-size: 36px; font-weight: bold; margin-bottom: 20px; letter-spacing: 2px; }
+        .project-meta { display: flex; justify-content: center; gap: 30px; color: var(--text-muted); font-size: 14px; margin-bottom: 30px; flex-wrap: wrap; }
+        .project-meta span { display: inline-block; padding: 4px 12px; border: 1px solid var(--border-color); border-radius: 20px; }
+        .project-description { font-size: 15px; color: var(--text-muted); text-align: left; max-width: 800px; margin: 0 auto; padding: 20px; background-color: rgba(150,150,150,0.05); border-radius: 8px; }
+        .project-description strong { color: var(--text-main); }
+
+        /* 项目图片展示区 (长图流) */
+        .project-gallery { display: flex; flex-direction: column; gap: 20px; width: 100%; }
+        .project-gallery img { width: 100%; height: auto; display: block; border-radius: 4px; box-shadow: 0 2px 10px rgba(0,0,0,0.03); }
+
+        /* 底部导航 */
+        .project-footer { margin-top: 80px; padding-top: 40px; border-top: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; font-size: 14px; color: var(--text-muted); }
+        .footer-nav a { padding: 10px 20px; border: 1px solid var(--text-main); color: var(--text-main); border-radius: 30px; }
+        .footer-nav a:hover { background: var(--text-main); color: var(--bg-color); }
+
+        /* 响应式 */
+        @media (max-width: 768px) {
+            .project-title { font-size: 28px; }
+            .project-meta { gap: 10px; }
+            .project-footer { flex-direction: column; gap: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="nav-logo">
+            <a href="index.html">← 返回首页</a>
+        </div>
+        <div class="nav-controls">
+            <span id="theme-toggle">暗黑 / 浅色</span>
+        </div>
+    </nav>
+
+    <div class="project-wrapper">
+        <div class="project-header">
+            <h1 class="project-title">小鹿乱撞 FLIPPED COFFEE</h1>
+            <div class="project-meta">
+                <span>品牌视觉</span>
+                <span>咖啡品牌</span>
+                <span>年份：2024</span>
+            </div>
+            <div class="project-description">
+                <p><strong>项目背景：</strong>小鹿乱撞是一家开在大学校园的咖啡店，主要以愉悦和轻松为核心理念，为咖啡爱好者提供一种独特的体验，让他们在繁忙的学业中找到片刻的愉悦与轻松。[cite: 1]</p>
+                <br>
+                <p><strong>设计思路：</strong>品牌主题以“小鹿乱撞，一起心动”为基调，通过小鹿咖啡的精选咖啡豆和独特的烘焙工艺，为顾客呈现出一杯杯带有舒缓和放松效果的咖啡。[cite: 1]</p>
+            </div>
+        </div>
+
+        <div class="project-gallery">
+            <img src="images/brand_Flippedcoffee_16.jpg" alt="小鹿乱撞Logo设计">
+            <img src="images/brand_Flippedcoffee_17.jpg" alt="咖啡杯物料延展">
+            <img src="images/brand_Flippedcoffee_18.jpg" alt="小鹿乱撞海报排版">
+            <img src="images/brand_Flippedcoffee_19.jpg" alt="小鹿乱撞海报排版">
+            <img src="images/brand_Flippedcoffee_20.jpg" alt="小鹿乱撞海报排版">
+            <img src="images/brand_Flippedcoffee_21.jpg" alt="小鹿乱撞海报排版">
+            <img src="images/brand_Flippedcoffee_22.jpg" alt="小鹿乱撞海报排版">
+            <img src="images/brand_Flippedcoffee_23.jpg" alt="小鹿乱撞海报排版">
+            <img src="images/brand_Flippedcoffee_24.jpg" alt="小鹿乱撞海报排版">
+            <img src="images/brand_Flippedcoffee_25.jpg" alt="小鹿乱撞海报排版">
+        </div>
+
+        <div class="project-footer">
+            <div class="prev-project">
+                <a href="project-tianlala.html">← 上一篇：甜啦啦</a>
+            </div>
+            <div class="footer-nav">
+                <a href="index.html">返回作品列表</a>
+            </div>
+            <div class="next-project">
+                <a href="project-bbq.html">下一篇：敢烧敢烤 →</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        themeToggleBtn.addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            if(currentTheme === 'dark') {
+                document.documentElement.removeAttribute('data-theme');
+            } else {
+                document.documentElement.setAttribute('data-theme', 'dark');
+            }
+        });
+    </script>
+</body>
+</html>
